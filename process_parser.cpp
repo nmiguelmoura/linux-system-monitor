@@ -34,21 +34,10 @@ std::vector<std::string> ProcessParser::getPidList() {
 }
 
 std::string ProcessParser::getVmSize(std::string pid) {
-    std::string key_name = "VmData";
     std::string path = Path::basePath() + pid + Path::statusPath();
-    std::ifstream stream = Utils::getStream(path);
-    
-    std::string vmSize = "0";
-    std::string line;
-    std::vector<string> words {};
-    while(std::getline(stream, line)) {
-        if(line.compare(0, key_name.size(), key_name) == 0) {
-            words = Utils::getWordsFromLine(line, 9);
-            vmSize = words[1];
-            break;
-        }
-    }
-
+    std::string line = Utils::getLineFromStreamByKeyName("VmData", path);
+    std::vector<string> words = Utils::getWordsFromLine(line, 9);
+    std::string vmSize = words[1];
     return std::to_string(stof(vmSize) / float(1024));
 }
 
@@ -88,24 +77,14 @@ std::string ProcessParser::getProcUpTime(std::string pid) {
 }
 
 std::string ProcessParser::getProcUser(std::string pid) {
-    std::string key_name = "Uid";
     std::string path = Path::basePath() + pid + Path::statusPath();
-    std::ifstream stream = Utils::getStream(path);
+    std::string line = Utils::getLineFromStreamByKeyName("Uid", path);
+    std::vector<string> words  = Utils::getWordsFromLine(line, 9);
+    std::string user_id = words[1];
 
-    std::string user_id = "0";
-    std::string line;
-    std::vector<string> words {};
-    while(std::getline(stream, line)) {
-        if(line.compare(0, key_name.size(), key_name) == 0) {
-            words = Utils::getWordsFromLine(line, 9);
-            user_id = words[1];
-            break;
-        }
-    }
-
-    key_name = "x:" + user_id;
+    std::string key_name = "x:" + user_id;
     path = Path::etcPasswd();
-    stream = Utils::getStream(path);
+    std::ifstream stream = Utils::getStream(path);
     std::string user_name = "";
     while(std::getline(stream, line)) {
         if(line.find(key_name) != std::string::npos) {
@@ -118,20 +97,9 @@ std::string ProcessParser::getProcUser(std::string pid) {
 }
 
 int ProcessParser::getNumberOfCores() {
-    std::string key_name = "cpu cores";
     std::string path = Path::basePath() + Path::cpuInfo();
-    std::ifstream stream = Utils::getStream(path);
-
-    int cpu_cores = 0;
-    std::string line;
-    std::vector<string>words {};
-
-    while(std::getline(stream, line)) {
-        if(line.compare(0, key_name.size(), key_name) == 0) {
-            words = Utils::getWordsFromLine(line,32);
-            cpu_cores = stoi(words[2]);
-            break;
-        }
-    }
+    std::string line = Utils::getLineFromStreamByKeyName("cpu cores", path);
+    std::vector<std::string> words = Utils::getWordsFromLine(line, 32);
+    int cpu_cores = stoi(words[2]);
     return cpu_cores;
 }

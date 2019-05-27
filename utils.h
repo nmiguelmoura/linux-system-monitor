@@ -13,4 +13,5 @@ public:
     static std::ifstream getStream(std::string path);
     static std::vector<std::string> getWordsFromLine(std::string &line, int splitter = 32);
     static std::string getFirstLineFromFileStream(std::string path);
+    static std::string getLineFromStreamByKeyName(std::string key_name, std::string path);
 };

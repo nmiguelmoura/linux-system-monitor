@@ -82,3 +82,15 @@ std::string Utils::getFirstLineFromFileStream(std::string path) {
     std::getline(stream, line);
     return line;
 }
+
+std::string Utils::getLineFromStreamByKeyName(std::string key_name, std::string path) {
+    std::ifstream stream = Utils::getStream(path);
+    std::string line;
+
+    while(std::getline(stream, line)) {
+        if(line.compare(0, key_name.size(), key_name) == 0) {
+            break;
+        }
+    }
+    return line;
+}
