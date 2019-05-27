@@ -1,5 +1,11 @@
 #include "process_parser.h"
 
+std::string ProcessParser::getCmd(std::string pid) {
+    std::string path = Path::basePath() + pid + Path::cmdPath();
+    std::string line = Utils::getFirstLineFromFileStream(path);
+    return line;
+}
+
 std::vector<std::string> ProcessParser::getPidList() {
     DIR* dir;
     std::vector<std::string> list {};
@@ -109,4 +115,23 @@ std::string ProcessParser::getProcUser(std::string pid) {
     }
 
     return user_name;
+}
+
+int ProcessParser::getNumberOfCores() {
+    std::string key_name = "cpu cores";
+    std::string path = Path::basePath() + Path::cpuInfo();
+    std::ifstream stream = Utils::getStream(path);
+
+    int cpu_cores = 0;
+    std::string line;
+    std::vector<string>words {};
+
+    while(std::getline(stream, line)) {
+        if(line.compare(0, key_name.size(), key_name) == 0) {
+            words = Utils::getWordsFromLine(line,32);
+            cpu_cores = stoi(words[2]);
+            break;
+        }
+    }
+    return cpu_cores;
 }

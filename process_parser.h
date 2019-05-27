@@ -37,6 +37,7 @@ class ProcessParser {
         static int getTotalThreads();
         static int getTotalNumberOfProcesses();
         static int getNumberOfRunningProcesses();
+        static int getNumberOfCores();
         static std::string getOSName();
         static std::string printCpuStats(std::vector<std::string> values1, std::vector<std::string> values2); 
 };

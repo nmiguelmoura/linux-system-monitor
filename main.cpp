@@ -40,6 +40,11 @@ int main() {
             count = 0;
         }
     }
+    std::cout << std::endl;
+    std::cout << std::endl;
 
+    std::cout << "Cmd: " << ProcessParser::getCmd(pid);
+    std::cout << std::endl;
+    std::cout << "CPU cores: " << ProcessParser::getNumberOfCores() << std::endl;
     return 0;
 }

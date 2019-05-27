@@ -49,4 +49,8 @@ public:
     static string etcPasswd() {
         return "/etc/passwd";
     }
+
+    static string cpuInfo() {
+        return "cpuinfo";
+    }
 };

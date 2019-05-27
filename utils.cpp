@@ -61,6 +61,7 @@ std::vector<std::string> Utils::getWordsFromLine(std::string &line, int splitter
 
     for(auto a : char_array) {
         int ia = (int)a;
+
         if(ia == splitter) {
             if(word != "") {
                 words.push_back(word);
