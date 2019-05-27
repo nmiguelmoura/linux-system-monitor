@@ -1,5 +1,31 @@
 #include "process_parser.h"
-#include <typeinfo>
+
+std::vector<std::string> ProcessParser::getPidList() {
+    DIR* dir;
+    std::vector<std::string> list {};
+    
+    if(!(dir = opendir("/proc"))) {
+        throw std::runtime_error(std::strerror(errno));
+    }
+
+    while(dirent* dirp = readdir(dir)) {
+        // Check if its a directory.
+        if(dirp->d_type != DT_DIR) {
+            // If not a directory, continue to next one.
+            continue;
+        }
+
+        if (all_of(dirp->d_name, dirp->d_name + std::strlen(dirp->d_name), [](char c){ return std::isdigit(c); })) {
+            list.push_back(dirp->d_name);
+        }
+    }
+
+    if(closedir(dir)) {
+        throw std::runtime_error(std::strerror(errno));
+    }
+
+    return list;
+}
 
 std::string ProcessParser::getVmSize(std::string pid) {
     std::string key_name = "VmData";

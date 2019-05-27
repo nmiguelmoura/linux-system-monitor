@@ -26,7 +26,20 @@ int main() {
     std::cout << "Process Up Time: " << ProcessParser::getProcUpTime(pid) << std::endl;
     std::cout << "Sys Up Time: " << ProcessParser::getSysUpTime() << std::endl;
     std::cout << "Proc user: " << ProcessParser::getProcUser(pid) << std::endl;
-    // ProcessParser::getProcUser(pid);
+    
+    std::cout << "\nPID List:" << std::endl;
+    int count = 0;
+    std::vector<std::string> pidList = ProcessParser::getPidList();
+    for(auto a : pidList) {
+        std::cout << a << " ";
+
+        count++;
+
+        if(count == 10) {
+            std::cout << std::endl;
+            count = 0;
+        }
+    }
 
     return 0;
 }

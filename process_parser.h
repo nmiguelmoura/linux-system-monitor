@@ -6,8 +6,9 @@
 #include "constants.h"
 #include "utils.h"
 #include <unistd.h>
+#include <dirent.h>
+#include <algorithm>
 
-// #include <algorithm>
 // #include <iostream>
 // #include <math.h>
 // #include <thread>
@@ -18,7 +19,6 @@
 // #include <sstream>
 // #include <stdexcept>
 // #include <cerrno>
-// #include <dirent.h>
 // #include <time.h>
 
 
