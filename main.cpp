@@ -4,6 +4,7 @@
 #include "constants.h"
 #include "utils.h"
 #include "process_parser.h"
+#include "sys_info.h"
 
 int main() {
 
@@ -46,5 +47,28 @@ int main() {
     std::cout << "Cmd: " << ProcessParser::getCmd(pid);
     std::cout << std::endl;
     std::cout << "CPU cores: " << ProcessParser::getNumberOfCores() << std::endl;
+
+    std::cout << std::endl;
+
+    std::cout << "core0:" << std::endl;
+    std::vector<std::string> core0 = ProcessParser::getSysCpuPercent("0");
+    for(auto a : core0) {
+        std::cout << a << " ";
+    }
+    std::cout << std::endl;
+    
+    std::cout << "Sys Active CPU Time (core0): " << ProcessParser::getSysActiveCpuTime(core0) << std::endl;
+    std::cout << "Sys Idle CPU Time (core0): " << ProcessParser::getSysIdleCpuTime(core0) << std::endl;
+    std::cout << "Sys Ram Percent: " << ProcessParser::getSysRamPercent() << std::endl;
+    std::cout << "Kernel Version: " << ProcessParser::getSysKernelVersion() << std::endl;
+    std::cout << "OS Name: " << ProcessParser::getOSName() << std::endl;
+    std::cout << "Threads: " << ProcessParser::getTotalThreads() << std::endl;
+    std::cout << "Total Processes: " << ProcessParser::getTotalNumberOfProcesses() << std::endl;
+    std::cout << "Running Processes: " << ProcessParser::getNumberOfRunningProcesses() << std::endl;
+
+
+    SysInfo sys;
+
+
     return 0;
 }
