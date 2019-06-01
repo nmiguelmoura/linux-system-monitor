@@ -9,19 +9,6 @@
 #include <dirent.h>
 #include <algorithm>
 
-// #include <iostream>
-// #include <math.h>
-// #include <thread>
-// #include <chrono>
-// #include <iterator>
-// #include <stdlib.h>
-// #include <stdio.h>
-// #include <sstream>
-// #include <stdexcept>
-// #include <cerrno>
-// #include <time.h>
-
-
 class ProcessParser {
     public:
         static std::string getCmd(std::string pid);
@@ -31,7 +18,9 @@ class ProcessParser {
         static long int getSysUpTime();
         static std::string getProcUpTime(std::string pid);
         static std::string getProcUser(std::string pid);
-        static  std::vector<std::string> getSysCpuPercent(std::string coreNumber = "");
+        static std::vector<std::string> getSysCpuPercent(std::string coreNumber = "");
+        static float getSysActiveCpuTime(std::vector<std::string> values);
+        static float getSysIdleCpuTime(std::vector<std::string> values);
         static float getSysRamPercent();
         static std::string getSysKernelVersion();
         static int getTotalThreads();

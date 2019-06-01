@@ -53,4 +53,8 @@ public:
     static string cpuInfo() {
         return "cpuinfo";
     }
+
+    static string osInfo() {
+        return "/etc/os-release";
+    }
 };
