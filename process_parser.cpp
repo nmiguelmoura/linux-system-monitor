@@ -36,9 +36,14 @@ std::vector<std::string> ProcessParser::getPidList() {
 std::string ProcessParser::getVmSize(std::string pid) {
     std::string path = Path::basePath() + pid + Path::statusPath();
     std::string line = Utils::getLineFromStreamByKeyName("VmData", path);
-    std::vector<string> words = Utils::getWordsFromLine(line, 9);
-    std::string vmSize = words[1];
-    return std::to_string(stof(vmSize) / float(1024));
+
+    if(line != "") {
+        std::vector<string> words = Utils::getWordsFromLine(line, 9);
+        std::string vmSize = words[1];
+        return std::to_string(stof(vmSize) / float(1024));
+    }
+
+    return "0";
 }
 
 std::string ProcessParser::getCpuPercent(std::string pid) {
