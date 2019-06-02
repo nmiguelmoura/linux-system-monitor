@@ -31,8 +31,8 @@ class SysInfo {
         std::string getKernelVersion() const;
         std::string getOSName() const;
         std::string getCpuPercent() const;
-        void getOtherCores(int size) const;
-        void setCpuCoreStats();
+        void getOtherCores(int size);
+        void setCpuCoresStats();
         std::vector<std::string> getCoreStats() const;
 
 };
