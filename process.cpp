@@ -16,11 +16,11 @@ void Process::setPid(std::string pid) {
 
 std::string Process::getProcess() {
     return (
-        this->pid + " "
-        + this->user + " "
-        + this->mem.substr(0, 5) + " "
-        + this->cpu.substr(0, 5) + " "
-        + this->up_time.substr(0, 5) + " "
+        this->pid + "   "
+        + this->user + "   "
+        + this->mem.substr(0, 5) + "   "
+        + this->cpu.substr(0, 5) + "   "
+        + this->up_time.substr(0, 5) + "   "
         + this->cmd.substr(0, 30)
     );
 }

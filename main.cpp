@@ -5,6 +5,8 @@
 #include "utils.h"
 #include "process_parser.h"
 #include "sys_info.h"
+#include "process.h"
+#include "process_container.h"
 
 int main() {
 
@@ -15,7 +17,7 @@ int main() {
     // int n = command.length();
     // char char_command[n+1];
     // strcpy(char_command, command.c_str());
-    // std::system(char_command);
+    // std::system(char_command);id
 
     // std::cout << Utils::getProgressbar("0%") << std::endl;
     // std::cout << Utils::convertToTime(3665) << std::endl;
@@ -69,6 +71,11 @@ int main() {
 
     SysInfo sys;
 
+    Process p(pid);
+    std::cout << p.getProcess() << std::endl;
+
+    ProcessContainer c;
+    std::cout << c.printList() << std::endl;
 
     return 0;
 }
