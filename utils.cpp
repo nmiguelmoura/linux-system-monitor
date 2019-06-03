@@ -94,3 +94,15 @@ std::string Utils::getLineFromStreamByKeyName(std::string key_name, std::string 
     }
     return line;
 }
+
+std::string Utils::resizeString(std::string str, int size) {
+    if(str.length() >= size) {
+        return str.substr(0, size);
+    }
+
+    for(int a = str.size(); a < size; a++) {
+        str += " ";
+    }
+
+    return str;
+}

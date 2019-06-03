@@ -4,6 +4,7 @@
 #include <string>
 #include <cstring>
 #include <vector>
+#include "constants.h"
 
 class Utils {
 public:
@@ -14,4 +15,5 @@ public:
     static std::vector<std::string> getWordsFromLine(std::string &line, int splitter = 32);
     static std::string getFirstLineFromFileStream(std::string path);
     static std::string getLineFromStreamByKeyName(std::string key_name, std::string path);
+    static std::string resizeString(std::string str, int size = ParameterSize::defaultSize());
 };

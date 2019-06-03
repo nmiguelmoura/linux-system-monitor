@@ -1,81 +1,138 @@
 #include <iostream>
 #include <string>
 #include <cstring>
+#include <vector>
 #include "constants.h"
 #include "utils.h"
 #include "process_parser.h"
 #include "sys_info.h"
 #include "process.h"
 #include "process_container.h"
+#include <curses.h>
+
+void printLine(WINDOW* win, std::string str, int y = 2, int x = 2, std::string type = "mvwprintw") {
+    char char_array[str.length() + 1];
+    strcpy(char_array, str.c_str());
+
+    if(type == "mvwprintw") {
+        mvwprintw(win, y, x, char_array);
+    } else {
+        wprintw(win, char_array);
+    }
+    
+}
+
+void writeSysInfoToConsole(SysInfo sys, WINDOW* sys_win) {
+    sys.setAttributes();
+
+    wattron(sys_win, COLOR_PAIR(1));
+    string temp = "OS: " + sys.getOSName();
+    printLine(sys_win, temp, 2, 2);
+
+
+    temp = "Kernel Version: " + sys.getKernelVersion();
+    printLine(sys_win, temp, 3, 2);
+
+    temp = "CPU: ";
+    printLine(sys_win, temp, 4, 2);
+
+    wattron(sys_win, COLOR_PAIR(2));
+    temp = Utils::getProgressbar(sys.getCpuPercent());
+    printLine(sys_win, temp, 0, 0, "wprintw");
+
+    wattron(sys_win, COLOR_PAIR(1));
+    temp = "Other cores: ";
+    printLine(sys_win, temp, 5, 2);
+
+    std::vector<std::string> val = sys.getCoreStats();
+    wattron(sys_win, COLOR_PAIR(2));
+    for(int a = 0; a < val.size(); a++) {
+        temp = val[a];
+        printLine(sys_win, val[a], 6 + a, 2);
+    }
+
+    wattron(sys_win, COLOR_PAIR(1));
+    temp = "Memory: ";
+    printLine(sys_win, temp, 10, 2);
+    
+    wattron(sys_win, COLOR_PAIR(2));
+    temp = Utils::getProgressbar(sys.getMemPercent());
+    printLine(sys_win, temp, 0, 0, "wprintw");
+
+    wattron(sys_win, COLOR_PAIR(1));
+    temp = "Total processes: " + sys.getTotalProc();
+    printLine(sys_win, temp, 11, 2);
+
+    temp = "Running Processes: " + sys.getRunningProc();
+    printLine(sys_win, temp, 12, 2);
+
+    temp = "Up Time: " + Utils::convertToTime(sys.getUptime());
+    printLine(sys_win, temp, 13, 2);
+}
+
+void getProcessListToConsole(ProcessContainer procs, WINDOW* procs_win) {
+    procs.refreshList();
+
+    wattron(procs_win, COLOR_PAIR(3));
+    int col = 2;
+    printLine(procs_win, "PID", 1, 2);
+
+    col += ParameterSize::defaultSize();
+    printLine(procs_win, "User", 1, col);
+
+    col += ParameterSize::userSize();
+    printLine(procs_win, "CPU (%)", 1, col);
+
+    col += ParameterSize::defaultSize();
+    printLine(procs_win, "RAM (MB)", 1, col);
+
+    col += ParameterSize::defaultSize();
+    printLine(procs_win, "Up Time", 1, col);
+
+    col += ParameterSize::defaultSize();
+    printLine(procs_win, "CMD", 1, col);
+
+    std::vector<std::string> list = procs.getList();
+    for(int a = 0; a < list.size(); a++) {
+        printLine(procs_win, list[a], a + 2, 2);
+    }
+}
+
+void printMain(SysInfo sys, ProcessContainer procs) {
+    initscr();
+    noecho();
+    cbreak();
+    start_color();
+    int yMax, xMax;
+    getmaxyx(stdscr, yMax, xMax);
+    WINDOW *sys_win = newwin(17, xMax - 1, 0, 0);
+    WINDOW *procs_win = newwin(15, xMax - 1, 18, 0);
+
+    init_pair(1, COLOR_WHITE, COLOR_BLACK);
+    init_pair(2, COLOR_BLUE, COLOR_BLACK);
+    init_pair(3, COLOR_GREEN, COLOR_BLACK);
+
+    while(true) {
+        box(sys_win, 0, 0);
+        box(procs_win, 0, 0);
+        writeSysInfoToConsole(sys, sys_win);
+        getProcessListToConsole(procs, procs_win);
+        wrefresh(sys_win);
+        wrefresh(procs_win);
+        refresh();
+        sleep(1);
+    }
+
+    endwin();
+}
 
 int main() {
 
-    // Print /proc/ directory contents.
-    // std::cout << "Hello, World!" << std::endl;
-    // std::cout << "listing: " << Path::basePath() << std::endl;
-    // std::string command = "ls " + Path::basePath();
-    // int n = command.length();
-    // char char_command[n+1];
-    // strcpy(char_command, command.c_str());
-    // std::system(char_command);id
-
-    // std::cout << Utils::getProgressbar("0%") << std::endl;
-    // std::cout << Utils::convertToTime(3665) << std::endl;
-    // std::cout << Utils::padStart("2", 10, ".") << std::endl;
-
-    std::string pid = "2556";
-    std::cout << "VmData: " << ProcessParser::getVmSize(pid) << " Mb" << std::endl;
-    std::cout << "Cpu percentage: " << ProcessParser::getCpuPercent(pid) << "%" << std::endl;
-    std::cout << "Process Up Time: " << ProcessParser::getProcUpTime(pid) << std::endl;
-    std::cout << "Sys Up Time: " << ProcessParser::getSysUpTime() << std::endl;
-    std::cout << "Proc user: " << ProcessParser::getProcUser(pid) << std::endl;
-    
-    std::cout << "\nPID List:" << std::endl;
-    int count = 0;
-    std::vector<std::string> pidList = ProcessParser::getPidList();
-    for(auto a : pidList) {
-        std::cout << a << " ";
-
-        count++;
-
-        if(count == 10) {
-            std::cout << std::endl;
-            count = 0;
-        }
-    }
-    std::cout << std::endl;
-    std::cout << std::endl;
-
-    std::cout << "Cmd: " << ProcessParser::getCmd(pid);
-    std::cout << std::endl;
-    std::cout << "CPU cores: " << ProcessParser::getNumberOfCores() << std::endl;
-
-    std::cout << std::endl;
-
-    std::cout << "core0:" << std::endl;
-    std::vector<std::string> core0 = ProcessParser::getSysCpuPercent("0");
-    for(auto a : core0) {
-        std::cout << a << " ";
-    }
-    std::cout << std::endl;
-    
-    std::cout << "Sys Active CPU Time (core0): " << ProcessParser::getSysActiveCpuTime(core0) << std::endl;
-    std::cout << "Sys Idle CPU Time (core0): " << ProcessParser::getSysIdleCpuTime(core0) << std::endl;
-    std::cout << "Sys Ram Percent: " << ProcessParser::getSysRamPercent() << std::endl;
-    std::cout << "Kernel Version: " << ProcessParser::getSysKernelVersion() << std::endl;
-    std::cout << "OS Name: " << ProcessParser::getOSName() << std::endl;
-    std::cout << "Threads: " << ProcessParser::getTotalThreads() << std::endl;
-    std::cout << "Total Processes: " << ProcessParser::getTotalNumberOfProcesses() << std::endl;
-    std::cout << "Running Processes: " << ProcessParser::getNumberOfRunningProcesses() << std::endl;
-
+    ProcessContainer procs;
 
     SysInfo sys;
 
-    Process p(pid);
-    std::cout << p.getProcess() << std::endl;
-
-    ProcessContainer c;
-    std::cout << c.printList() << std::endl;
+    printMain(sys, procs);
 
     return 0;
 }

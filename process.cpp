@@ -1,5 +1,7 @@
 #include "process.h"
 #include "process_parser.h"
+#include "utils.h"
+#include "constants.h"
 
 Process::Process(std::string pid) {
     this->setPid(pid);
@@ -16,11 +18,11 @@ void Process::setPid(std::string pid) {
 
 std::string Process::getProcess() {
     return (
-        this->pid + "   "
-        + this->user + "   "
-        + this->mem.substr(0, 5) + "   "
-        + this->cpu.substr(0, 5) + "   "
-        + this->up_time.substr(0, 5) + "   "
-        + this->cmd.substr(0, 30)
+        Utils::resizeString(this->pid)
+        + Utils::resizeString(this->user, ParameterSize::userSize())
+        + Utils::resizeString(this->mem)
+        + Utils::resizeString(this->cpu)
+        + Utils::resizeString(this->up_time)
+        + Utils::resizeString(this->cmd, ParameterSize::cmdSize())
     );
 }

@@ -58,3 +58,18 @@ public:
         return "/etc/os-release";
     }
 };
+
+class ParameterSize {
+    public:
+    static int defaultSize() {
+        return 12;
+    }
+
+    static int userSize() {
+        return 18;
+    }
+
+    static int cmdSize() {
+        return 30;
+    }
+};

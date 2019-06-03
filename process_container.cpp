@@ -10,7 +10,6 @@ void ProcessContainer::refreshList() {
     std::vector<std::string> pidList = ProcessParser::getPidList();
 
     for(int a = 0; a < pidList.size(); a++) {
-        std::cout << pidList[a] << std::endl;
         Process p(pidList[a]);
         list.push_back(p);
     }
@@ -30,5 +29,5 @@ std::vector<std::string> ProcessContainer::getList() {
     for(int a = (list.size() - 10); a < this->list.size(); a++) {
         values.push_back(this->list[a].getProcess());
     }
-    return std::vector<std::string>();
+    return values;
 }
