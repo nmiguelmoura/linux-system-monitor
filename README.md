@@ -1,6 +1,10 @@
 # Linux System Monitor
 Utility to monitor linux system through command line.
 
+### Libraries needed
+Ncurses library is needed to run the program.To install run:
+`sudo apt-get install libncurses5-dev libncursesw5-dev`
+
 ### Running instructions with CMAKE
 1. Navigate to project folder and add a folder `./build`;
 2. Navigate to `./build` folder and run the command `cmake ..`;
