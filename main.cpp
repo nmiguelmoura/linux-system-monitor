@@ -4,10 +4,10 @@
 #include <vector>
 #include "constants.h"
 #include "utils.h"
-#include "process_parser.h"
+#include "processParser.h"
 #include "sys_info.h"
 #include "process.h"
-#include "process_container.h"
+#include "processContainer.h"
 #include <curses.h>
 
 void printLine(WINDOW* win, std::string str, int y = 2, int x = 2, std::string type = "mvwprintw") {

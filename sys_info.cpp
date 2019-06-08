@@ -1,5 +1,5 @@
 #include "sys_info.h"
-#include "process_parser.h"
+#include "processParser.h"
 
 SysInfo::SysInfo() {
     this->getOtherCores(ProcessParser::getNumberOfCores());

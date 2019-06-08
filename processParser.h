@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <dirent.h>
 #include <algorithm>
+#include <iterator>
 
 class ProcessParser {
     public:
@@ -28,5 +29,6 @@ class ProcessParser {
         static int getNumberOfRunningProcesses();
         static int getNumberOfCores();
         static std::string getOSName();
-        static std::string printCpuStats(std::vector<std::string> values1, std::vector<std::string> values2); 
+        static std::string printCpuStats(std::vector<std::string> values1, std::vector<std::string> values2);
+        static bool isPidExisting(std::string pid);
 };

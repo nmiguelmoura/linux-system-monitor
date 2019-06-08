@@ -1,5 +1,5 @@
 #include "process.h"
-#include "process_parser.h"
+#include "processParser.h"
 #include "utils.h"
 #include "constants.h"
 
@@ -17,6 +17,10 @@ void Process::setPid(std::string pid) {
 }
 
 std::string Process::getProcess() {
+    if(!ProcessParser::isPidExisting(this->pid)) {
+        return "";
+    }
+
     return (
         Utils::resizeString(this->pid)
         + Utils::resizeString(this->user, ParameterSize::userSize())

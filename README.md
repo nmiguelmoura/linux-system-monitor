@@ -12,4 +12,4 @@ Ncurses library is needed to run the program.To install run:
 
 ## Running instructions without CMAKE
 1. Navigate to project folder;
-2. Run the command `g++ main.cpp utils.cpp process_parser.cpp sys_info.cpp process.cpp process_container.cpp -lncurses && ./a.out`.
+2. Run the command `g++ main.cpp utils.cpp processParser.cpp sys_info.cpp process.cpp processContainer.cpp -lncurses && ./a.out`.

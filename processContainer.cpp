@@ -1,5 +1,5 @@
-#include "process_container.h"
-#include "process_parser.h"
+#include "processContainer.h"
+#include "processParser.h"
 
 ProcessContainer::ProcessContainer() {
     this->refreshList();

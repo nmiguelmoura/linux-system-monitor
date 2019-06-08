@@ -1,4 +1,4 @@
-#include "process_parser.h"
+#include "processParser.h"
 
 std::string ProcessParser::getCmd(std::string pid) {
     std::string path = Path::basePath() + pid + Path::cmdPath();
@@ -211,4 +211,9 @@ std::string ProcessParser::printCpuStats(std::vector<std::string> values1, std::
     float total_time = active_time + idle_time;
     float result = (active_time / total_time) * 100.0;
     return std::to_string(result);
+}
+
+bool ProcessParser::isPidExisting(std::string pid) {
+    std::vector<std::string> pidList = ProcessParser::getPidList();
+    return std::find(std::begin(pidList), std::end(pidList), pid) != std::end(pidList);
 }
